@@ -89,54 +89,6 @@ This returns you to the jump host (`thor@jumphost`).
 
 ---
 
-## Complete Command Sequence (As Shown in Lab)
-
-From jump host to completion:
-
-```bash
-# Connect to App Server 2
-ssh steve@stapp02.stratos.xfusioncorp.com
-
-# Create user with non-interactive shell
-sudo useradd -s /sbin/nologin yousuf
-
-# Verify user creation
-getent passwd yousuf
-
-# Exit back to jump host
-exit
-```
-
----
-
-### 4. (Optional) Test Non-Interactive Behavior
-
-Try to switch to the user to confirm login is disabled:
-
-```bash
-su - yousuf
-```
-
-**Expected result:**
-```
-This account is currently not available.
-```
-
-This confirms the non-interactive shell is working correctly.
-
----
-
-## Additional Commands (Optional)
-
-### Set a password (if needed for sudo operations)
-```bash
-sudo passwd yousuf
-```
-
-### View user details
-```bash
-id yousuf
-```
 
 ### Check user's shell
 ```bash
