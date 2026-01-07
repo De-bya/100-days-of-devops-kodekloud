@@ -1,8 +1,18 @@
 # Day 01 – Create Linux User with Non-Interactive Shell
 
 ## Task
+To accommodate the backup agent tool's specifications, the system admin team at **xFusionCorp Industries** requires the creation of a user with a non-interactive shell.
+
 Create a user named `yousuf` with a non-interactive shell on **App Server 2**.
+
 This type of user is commonly used for services and automation where login access is not required.
+
+---
+
+## Lab Environment
+- **Jump Host:** `thor@jumphost`
+- **Target Server:** App Server 2 (`stapp02.stratos.xfusioncorp.com`)
+- **Server User:** `steve`
 
 ---
 
@@ -10,6 +20,7 @@ This type of user is commonly used for services and automation where login acces
 
 A **non-interactive shell** (`/sbin/nologin`) prevents a user from logging into the system interactively. This is a security best practice for:
 - Service accounts that run background processes
+- Backup agents and automated tools
 - Application users that don't need terminal access
 - Automated systems that only need file ownership or process execution
 
@@ -17,13 +28,16 @@ A **non-interactive shell** (`/sbin/nologin`) prevents a user from logging into 
 
 ## Steps
 
-### 1. Connect to the Server
+### 1. Connect to the Server from Jump Host
 
 ```bash
 ssh steve@stapp02.stratos.xfusioncorp.com
 ```
 
-**Note:** You'll be prompted for the password. Enter the correct password for user `steve`.
+**Note:** 
+- You'll see an SSH key fingerprint warning on first connection - type `yes` to continue
+- You'll be prompted for the password. Enter the correct password for user `steve`
+- The key fingerprint will be permanently added to known hosts
 
 ---
 
@@ -59,11 +73,39 @@ yousuf:x:1002:1002::/home/yousuf:/sbin/nologin
 **Understanding the output:**
 - `yousuf` - Username
 - `x` - Password is stored in `/etc/shadow` (encrypted)
-- `1002` - User ID (UID)
-- `1002` - Group ID (GID)
+- `1002` - User ID (UID) - may vary depending on existing users
+- `1002` - Group ID (GID) - typically same as UID for new users
 - `` - GECOS field (user info, empty here)
 - `/home/yousuf` - Home directory
 - `/sbin/nologin` - Login shell (non-interactive)
+
+### 4. Exit from App Server 2
+
+```bash
+exit
+```
+
+This returns you to the jump host (`thor@jumphost`).
+
+---
+
+## Complete Command Sequence (As Shown in Lab)
+
+From jump host to completion:
+
+```bash
+# Connect to App Server 2
+ssh steve@stapp02.stratos.xfusioncorp.com
+
+# Create user with non-interactive shell
+sudo useradd -s /sbin/nologin yousuf
+
+# Verify user creation
+getent passwd yousuf
+
+# Exit back to jump host
+exit
+```
 
 ---
 
@@ -101,20 +143,3 @@ id yousuf
 grep yousuf /etc/passwd
 ```
 
----
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Permission denied when running `useradd` | Use `sudo` prefix |
-| User already exists | Use `sudo userdel yousuf` to remove, then recreate |
-| Cannot verify user | Ensure you're on the correct server (stapp02) |
-
----
-
-## Summary
-
-✅ Successfully created user `yousuf` with non-interactive shell  
-✅ Verified user configuration  
-✅ Ensured security by preventing interactive login
