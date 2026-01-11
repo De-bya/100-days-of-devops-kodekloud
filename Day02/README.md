@@ -172,17 +172,7 @@ sudo usermod -e 2024-03-31 mariyam
 
 ---
 
-## Notes from Lab Execution
-
-- The lab demonstrates proper temporary access management
-- Account expiry is set at account creation time using the `-e` flag
-- The `chage -l` command displays comprehensive account aging information
-- Failed login attempts are tracked (shown in the terminal output)
-- System displays security reminders about privacy and responsibility
-- Always exit back to jump host after completing tasks on app servers
-
----
-
+## Key Takeaways
 
 1. **Temporary users** should always have expiry dates for security
 2. **`useradd -e`** sets expiry during user creation
